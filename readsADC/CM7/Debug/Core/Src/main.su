@@ -1,0 +1,7 @@
+../Core/Src/main.cpp:76:5:int main()	40	static
+../Core/Src/main.cpp:152:6:void SystemClock_Config()	120	static
+../Core/Src/main.cpp:211:13:void MX_ADC1_Init()	48	static
+../Core/Src/main.cpp:279:13:void MX_USART3_UART_Init()	8	static
+../Core/Src/main.cpp:327:13:void MX_USB_OTG_FS_PCD_Init()	8	static
+../Core/Src/main.cpp:363:13:void MX_GPIO_Init()	24	static
+../Core/Src/main.cpp:386:6:void Error_Handler()	4	static,ignoring_inline_asm

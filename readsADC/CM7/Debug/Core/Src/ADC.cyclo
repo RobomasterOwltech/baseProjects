@@ -1,0 +1,2 @@
+../Core/Src/ADC.cpp:9:1:ADC::ADC(ADC_HandleTypeDef*, UART_HandleTypeDef*)	1
+../Core/Src/ADC.cpp:15:6:void ADC::read()	1
