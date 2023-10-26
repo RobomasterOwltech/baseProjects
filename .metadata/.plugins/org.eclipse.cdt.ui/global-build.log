@@ -1,54 +1,27 @@
-17:52:08 **** Incremental Build of configuration Debug for project joystick_mulADC_CM7 ****
+12:25:43 **** Incremental Build of configuration Debug for project chassis_movement_joystick_CM7 ****
 make -j8 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:197:31: warning: pointer targets in passing argument 2 of 'HAL_UART_Transmit' differ in signedness [-Wpointer-sign]
-  197 |     HAL_UART_Transmit(&huart3,msg,sizeof(msg),10);// Sending in normal mode
-      |                               ^~~
-      |                               |
-      |                               char *
-In file included from ../Core/Inc/stm32h7xx_hal_conf.h:463,
-                 from ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:29,
-                 from ../Core/Inc/main.h:30,
-                 from ../Core/Src/main.c:20:
-../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:1637:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char *'
- 1637 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                ~~~~~~~~~~~~~~~^~~~~
-arm-none-eabi-g++ -o "joystick_mulADC_CM7.elf" @"objects.list"   -mcpu=cortex-m7 -T"C:\Users\serfa\Documents\1School\baseProjects\joystick_mulADC\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="joystick_mulADC_CM7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
-Finished building target: joystick_mulADC_CM7.elf
- 
-arm-none-eabi-size   joystick_mulADC_CM7.elf 
-arm-none-eabi-objdump -h -S  joystick_mulADC_CM7.elf  > "joystick_mulADC_CM7.list"
+arm-none-eabi-size   chassis_movement_joystick_CM7.elf 
    text	   data	    bss	    dec	    hex	filename
-  39816	    296	   3920	  44032	   ac00	joystick_mulADC_CM7.elf
+  55976	    104	   4304	  60384	   ebe0	chassis_movement_joystick_CM7.elf
 Finished building: default.size.stdout
  
-Finished building: joystick_mulADC_CM7.list
- 
-17:52:13 **** Incremental Build of configuration Debug for project joystick_mulADC_CM7 ****
+12:27:44 **** Incremental Build of configuration Debug for project chassis_movement_joystick_CM7 ****
 make -j8 all 
-arm-none-eabi-size   joystick_mulADC_CM7.elf 
+arm-none-eabi-size   chassis_movement_joystick_CM7.elf 
    text	   data	    bss	    dec	    hex	filename
-  39816	    296	   3920	  44032	   ac00	joystick_mulADC_CM7.elf
+  55976	    104	   4304	  60384	   ebe0	chassis_movement_joystick_CM7.elf
 Finished building: default.size.stdout
  
-17:54:05 **** Incremental Build of configuration Debug for project joystick_mulADC_CM7 ****
+12:28:36 **** Incremental Build of configuration Debug for project chassis_movement_joystick_CM7 ****
 make -j8 all 
-arm-none-eabi-g++ -o "joystick_mulADC_CM7.elf" @"objects.list"   -mcpu=cortex-m7 -T"C:\Users\serfa\Documents\1School\baseProjects\joystick_mulADC\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="joystick_mulADC_CM7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
-Finished building target: joystick_mulADC_CM7.elf
+arm-none-eabi-g++ -o "chassis_movement_joystick_CM7.elf" @"objects.list"   -mcpu=cortex-m7 -T"C:\Users\serfa\Documents\1School\baseProjects\chassis_movement_joystick\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="chassis_movement_joystick_CM7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: chassis_movement_joystick_CM7.elf
  
-arm-none-eabi-size   joystick_mulADC_CM7.elf 
-arm-none-eabi-objdump -h -S  joystick_mulADC_CM7.elf  > "joystick_mulADC_CM7.list"
+arm-none-eabi-size   chassis_movement_joystick_CM7.elf 
+arm-none-eabi-objdump -h -S  chassis_movement_joystick_CM7.elf  > "chassis_movement_joystick_CM7.list"
    text	   data	    bss	    dec	    hex	filename
-  57616	    672	   3928	  62216	   f308	joystick_mulADC_CM7.elf
+  73776	    480	   4304	  78560	  132e0	chassis_movement_joystick_CM7.elf
 Finished building: default.size.stdout
  
-Finished building: joystick_mulADC_CM7.list
- 
-17:54:27 **** Incremental Build of configuration Debug for project joystick_mulADC_CM7 ****
-make -j8 all 
-arm-none-eabi-size   joystick_mulADC_CM7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  57616	    672	   3928	  62216	   f308	joystick_mulADC_CM7.elf
-Finished building: default.size.stdout
+Finished building: chassis_movement_joystick_CM7.list
  

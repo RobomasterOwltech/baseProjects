@@ -1,10 +1,61 @@
-17:54:27 **** Incremental Build of configuration Debug for project joystick_mulADC_CM7 ****
+19:42:19 **** Incremental Build of configuration Debug for project joystick_mulADC_CM7 ****
 make -j8 all 
-arm-none-eabi-size   joystick_mulADC_CM7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  57616	    672	   3928	  62216	   f308	joystick_mulADC_CM7.elf
-Finished building: default.size.stdout
- 
+arm-none-eabi-g++ "../Core/Src/Encoder.cpp" -mcpu=cortex-m7 -std=gnu++14 -g3 -DDEBUG -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/Encoder.d" -MT"Core/Src/Encoder.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/Encoder.o"
+arm-none-eabi-g++ "../Core/Src/MotorPI.cpp" -mcpu=cortex-m7 -std=gnu++14 -g3 -DDEBUG -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/MotorPI.d" -MT"Core/Src/MotorPI.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/MotorPI.o"
+make: *** No rule to make target '../Core/Src/main.c', needed by 'Core/Src/main.o'.  Stop.
+make: *** Waiting for unfinished jobs....
+In file included from ../Core/Inc/MotorPI.hpp:11,
+                 from ../Core/Src/MotorPI.cpp:8:
+../Core/Inc/Encoder.hpp:29:9: error: 'TIM_HandleTypeDef' does not name a type; did you mean 'PCD_HandleTypeDef'?
+   29 |         TIM_HandleTypeDef * htimCounter;
+      |         ^~~~~~~~~~~~~~~~~
+      |         PCD_HandleTypeDef
+../Core/Inc/Encoder.hpp:48:34: error: expected ')' before '*' token
+   48 |         Encoder(TIM_HandleTypeDef * htim, int int_freq);
+      |                ~                 ^~
+      |                                  )
+In file included from ../Core/Src/Encoder.cpp:8:
+../Core/Inc/Encoder.hpp:29:9: error: 'TIM_HandleTypeDef' does not name a type; did you mean 'PCD_HandleTypeDef'?
+   29 |         TIM_HandleTypeDef * htimCounter;
+      |         ^~~~~~~~~~~~~~~~~
+      |         PCD_HandleTypeDef
+../Core/Inc/Encoder.hpp:48:34: error: expected ')' before '*' token
+   48 |         Encoder(TIM_HandleTypeDef * htim, int int_freq);
+      |                ~                 ^~
+      |                                  )
+../Core/Src/Encoder.cpp:10:29: error: expected constructor, destructor, or type conversion before '(' token
+   10 | LL_Control::Encoder::Encoder(TIM_HandleTypeDef * htim, int int_freq) {
+      |                             ^
+In file included from ../Core/Src/MotorPI.cpp:8:
+../Core/Inc/MotorPI.hpp:34:9: error: 'TIM_HandleTypeDef' does not name a type; did you mean 'PCD_HandleTypeDef'?
+   34 |         TIM_HandleTypeDef * htimPWM;
+      |         ^~~~~~~~~~~~~~~~~
+      |         PCD_HandleTypeDef
+../Core/Src/Encoder.cpp: In member function 'void LL_Control::Encoder::update()':
+../Core/Src/Encoder.cpp:44:41: error: 'htimCounter' was not declared in this scope
+   44 |         int tick =__HAL_TIM_GET_COUNTER(htimCounter);
+      |                                         ^~~~~~~~~~~
+../Core/Inc/MotorPI.hpp:70:43: error: 'TIM_HandleTypeDef' has not been declared
+   70 |         Motor_PI(LL_Control::Encoder * e, TIM_HandleTypeDef * htim, int minFreq, int maxFreq);
+      |                                           ^~~~~~~~~~~~~~~~~
+../Core/Src/MotorPI.cpp:12:57: error: 'TIM_HandleTypeDef' has not been declared
+   12 | LL_Control::Motor_PI::Motor_PI(LL_Control::Encoder * e, TIM_HandleTypeDef * htim, int minFreq, int maxFreq) {
+      |                                                         ^~~~~~~~~~~~~~~~~
+../Core/Src/MotorPI.cpp: In constructor 'LL_Control::Motor_PI::Motor_PI(LL_Control::Encoder*, int*, int, int)':
+../Core/Src/MotorPI.cpp:15:9: error: 'htimPWM' was not declared in this scope; did you mean 'htim'?
+   15 |         htimPWM = htim;
+      |         ^~~~~~~
+      |         htim
+../Core/Src/MotorPI.cpp: In member function 'void LL_Control::Motor_PI::go_to_ref()':
+../Core/Src/MotorPI.cpp:126:5: error: 'htimPWM' was not declared in this scope
+  126 |     htimPWM -> Instance-> CCR1 = map(control);
+      |     ^~~~~~~
+make: *** [Core/Src/subdir.mk:41: Core/Src/MotorPI.o] Error 1
+../Core/Src/Encoder.cpp:44:19: error: '__HAL_TIM_GET_COUNTER' was not declared in this scope
+   44 |         int tick =__HAL_TIM_GET_COUNTER(htimCounter);
+      |                   ^~~~~~~~~~~~~~~~~~~~~
+make: *** [Core/Src/subdir.mk:41: Core/Src/Encoder.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
 
-17:54:27 Build Finished. 0 errors, 0 warnings. (took 368ms)
+19:42:22 Build Failed. 16 errors, 0 warnings. (took 3s.53ms)
 
