@@ -36,4 +36,5 @@ Common/Src \
 Core/Src \
 Core/Startup \
 Drivers/STM32H7xx_HAL_Driver \
+Middlewares/Third_Party/FreeRTOS \
 
