@@ -195,7 +195,7 @@ Error_Handler();
 
     snprintf(msg, 100, "CH_1: %.2f, CH_2: %.2f \r\n", x_map, y_map);
     HAL_UART_Transmit(&huart3,msg,sizeof(msg),10);// Sending in normal mode
-    HAL_Delay(10);    
+    HAL_Delay(10);
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
   }
