@@ -22,6 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "Encoder.hpp"
+#include "MotorPI.hpp"
 
 #include "stdio.h"
 #include "stdint.h"
@@ -73,7 +75,14 @@ const osThreadAttr_t defaultTask_attributes = {
 osThreadId_t JoystickHandle;
 const osThreadAttr_t Joystick_attributes = {
   .name = "Joystick",
-  .stack_size = 128 * 8,
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* Definitions for Chassis */
+osThreadId_t ChassisHandle;
+const osThreadAttr_t Chassis_attributes = {
+  .name = "Chassis",
+  .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
@@ -101,6 +110,7 @@ static void MX_ADC1_Init(void);
 static void MX_ADC2_Init(void);
 void StartDefaultTask(void *argument);
 void StartJoystick(void *argument);
+void StartChassis(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -210,6 +220,9 @@ Error_Handler();
 
   /* creation of Joystick */
   JoystickHandle = osThreadNew(StartJoystick, NULL, &Joystick_attributes);
+
+  /* creation of Chassis */
+  ChassisHandle = osThreadNew(StartChassis, NULL, &Chassis_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -890,7 +903,6 @@ void StartJoystick(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    //c = c + 1;
     HAL_ADC_Start(&hadc1);
     HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
     x_adc = HAL_ADC_GetValue(&hadc1);
@@ -913,9 +925,38 @@ void StartJoystick(void *argument)
 
     snprintf(msg, 50, "CH_1: %.2f, CH_2: %.2f \r\n", x_map, y_map);
     HAL_UART_Transmit(&huart3,(uint8_t*) msg,sizeof(msg),10);// Sending in normal mode
-	osDelay(250U);
+    osDelay(250U);
   }
   /* USER CODE END StartJoystick */
+}
+
+/* USER CODE BEGIN Header_StartChassis */
+/**
+* @brief Function implementing the Chassis thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartChassis */
+void StartChassis(void *argument)
+{
+  /* USER CODE BEGIN StartChassis */
+  /* Infinite loop */
+  HAL_TIM_Encoder_Start_IT(&htim8, TIM_CHANNEL_ALL);
+  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
+  LL_Control::Encoder encL(&htim8, 50);
+  LL_Control::Motor_PI  motorL(&encL, &htim3, 1050, 1950);
+  motorL.set_Ks(10.0f,5);
+  motorL.stop();
+
+  for(;;)
+  {
+
+    motorL.set_reference(y_map*2);
+    encL.update();
+    motorL.go_to_ref();
+    osDelay(20U);
+  }
+  /* USER CODE END StartChassis */
 }
 
 /**
