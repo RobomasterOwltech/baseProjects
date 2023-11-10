@@ -24,14 +24,13 @@
 /* USER CODE BEGIN Includes */
 #include "Encoder.hpp"
 #include "MotorPI.hpp"
-
+#include "Joystick.hpp"
 #include "stdio.h"
 #include "stdint.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -82,16 +81,22 @@ const osThreadAttr_t Joystick_attributes = {
 osThreadId_t ChassisHandle;
 const osThreadAttr_t Chassis_attributes = {
   .name = "Chassis",
-  .stack_size = 128 * 4,
+  .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for JoystickQueue */
+osMessageQueueId_t JoystickQueueHandle;
+const osMessageQueueAttr_t JoystickQueue_attributes = {
+  .name = "JoystickQueue"
+};
 /* USER CODE BEGIN PV */
-int c = 0;
-uint16_t x_adc, y_adc;
-float x_axis, y_axis;
 char msg[50];
-int in_min, in_max, out_min, out_max;
-float x_map, y_map;
+struct Data
+{
+	float x_data;
+	float y_data;
+};
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -209,6 +214,10 @@ Error_Handler();
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
+
+  /* Create the queue(s) */
+  /* creation of JoystickQueue */
+  JoystickQueueHandle = osMessageQueueNew (16, sizeof(Data), &JoystickQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -900,31 +909,16 @@ void StartDefaultTask(void *argument)
 void StartJoystick(void *argument)
 {
   /* USER CODE BEGIN StartJoystick */
+  Joystick j1(&hadc1, &hadc2);
+  Data data_joystick;
   /* Infinite loop */
   for(;;)
   {
-    HAL_ADC_Start(&hadc1);
-    HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-    x_adc = HAL_ADC_GetValue(&hadc1);
+    j1.read();
+    j1.set_pos();
     osDelay(10U);
-
-    HAL_ADC_Start(&hadc2);
-    HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
-    y_adc = HAL_ADC_GetValue(&hadc2);
-    osDelay(10U);
-
-    x_axis = x_adc / 1000;
-    y_axis = y_adc / 1000;
-    in_min = 1;
-    in_max = 65;
-    out_min = -1;
-    out_max = 1;
-
-    x_map = (x_axis - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-    y_map = (y_axis - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-
-    snprintf(msg, 50, "CH_1: %.2f, CH_2: %.2f \r\n", x_map, y_map);
-    HAL_UART_Transmit(&huart3,(uint8_t*) msg,sizeof(msg),10);// Sending in normal mode
+    data_joystick = {j1.get_xPos(), j1.get_yPos()};
+    osMessageQueuePut(JoystickQueueHandle,&data_joystick,0, 200);
     osDelay(250U);
   }
   /* USER CODE END StartJoystick */
@@ -940,21 +934,42 @@ void StartJoystick(void *argument)
 void StartChassis(void *argument)
 {
   /* USER CODE BEGIN StartChassis */
-  /* Infinite loop */
+  Data reference;
+
+/*
   HAL_TIM_Encoder_Start_IT(&htim8, TIM_CHANNEL_ALL);
+  HAL_TIM_Encoder_Start_IT(&htim4, TIM_CHANNEL_ALL);
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
-  LL_Control::Encoder encL(&htim8, 50);
+  HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
+
+  LL_Control::Encoder encL(&htim4, 50);
   LL_Control::Motor_PI  motorL(&encL, &htim3, 1050, 1950);
   motorL.set_Ks(10.0f,5);
   motorL.stop();
-
+  
+  LL_Control::Encoder encR(&htim8, 50);
+  LL_Control::Motor_PI  motorR(&encR, &htim2, 1050, 1950);
+  motorR.set_Ks(10.0f,5);
+  motorR.stop();
+*/
+  /* Infinite loop */
   for(;;)
   {
 
-    motorL.set_reference(y_map*2);
+    osMessageQueueGet(JoystickQueueHandle, &reference, NULL, osWaitForever);
+/*
+    motorL.set_reference((reference.x_data * 2) - (reference.y_data*2));
     encL.update();
     motorL.go_to_ref();
+
+    motorR.set_reference((reference.x_data * 2) + (reference.y_data*2));
+    encR.update();
+    motorR.go_to_ref();
+*/
+    snprintf(msg, 50, "CH_1: %.2f, CH_2: %.2f \r\n", reference.x_data, reference.y_data);
+    HAL_UART_Transmit(&huart3,(uint8_t*) msg,sizeof(msg),10);
     osDelay(20U);
+
   }
   /* USER CODE END StartChassis */
 }

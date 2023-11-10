@@ -1,5 +1,6 @@
 "./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o"
 "./Core/Src/Encoder.o"
+"./Core/Src/Joystick.o"
 "./Core/Src/MotorPI.o"
 "./Core/Src/freertos.o"
 "./Core/Src/main.o"

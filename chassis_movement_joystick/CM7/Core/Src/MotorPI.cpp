@@ -7,6 +7,21 @@
 
 #include "MotorPI.hpp"
 
+/*
+ * TODO:
+ * Mezclar el update sensor con el método del motor
+ *
+ * Verificar las frecuencias para que sean las mismas de la task y de los
+ * calculos del delta t
+ *
+ * Configurar el motor para que acepte canales, y puedas generar diferentes señales
+ * desde un mismo timer
+ *
+ * Poner el joystick en una clase, con los dos ejes y el boton
+ *
+ *
+ *
+ * */
 
 
 LL_Control::Motor_PI::Motor_PI(LL_Control::Encoder * e, TIM_HandleTypeDef * htim, int minFreq, int maxFreq) {
