@@ -91,11 +91,8 @@ const osMessageQueueAttr_t JoystickQueue_attributes = {
 };
 /* USER CODE BEGIN PV */
 char msg[50];
-struct Data
-{
-	float x_data;
-	float y_data;
-};
+float x_data;
+float y_data;
 
 /* USER CODE END PV */
 
@@ -217,7 +214,6 @@ Error_Handler();
 
   /* Create the queue(s) */
   /* creation of JoystickQueue */
-  JoystickQueueHandle = osMessageQueueNew (16, sizeof(Data), &JoystickQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -910,15 +906,16 @@ void StartJoystick(void *argument)
 {
   /* USER CODE BEGIN StartJoystick */
   Joystick j1(&hadc1, &hadc2);
-  Data data_joystick;
   /* Infinite loop */
   for(;;)
   {
     j1.read();
     j1.set_pos();
     osDelay(10U);
-    data_joystick = {j1.get_xPos(), j1.get_yPos()};
-    osMessageQueuePut(JoystickQueueHandle,&data_joystick,0, 200);
+
+    x_data = j1.get_xPos();
+    y_data = j1.get_yPos();
+
     osDelay(250U);
   }
   /* USER CODE END StartJoystick */
@@ -934,42 +931,37 @@ void StartJoystick(void *argument)
 void StartChassis(void *argument)
 {
   /* USER CODE BEGIN StartChassis */
-  Data reference;
+  //Data reference;
 
-/*
   HAL_TIM_Encoder_Start_IT(&htim8, TIM_CHANNEL_ALL);
   HAL_TIM_Encoder_Start_IT(&htim4, TIM_CHANNEL_ALL);
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
 
   LL_Control::Encoder encL(&htim4, 50);
-  LL_Control::Motor_PI  motorL(&encL, &htim3, 1050, 1950);
+  LL_Control::Motor_PI  motorL(&encL, &htim2, 1050, 1950);
   motorL.set_Ks(10.0f,5);
   motorL.stop();
-  
+
   LL_Control::Encoder encR(&htim8, 50);
-  LL_Control::Motor_PI  motorR(&encR, &htim2, 1050, 1950);
+  LL_Control::Motor_PI  motorR(&encR, &htim3, 1050, 1950);
   motorR.set_Ks(10.0f,5);
   motorR.stop();
-*/
+
   /* Infinite loop */
   for(;;)
   {
-
-    osMessageQueueGet(JoystickQueueHandle, &reference, NULL, osWaitForever);
-/*
-    motorL.set_reference((reference.x_data * 2) - (reference.y_data*2));
+    motorL.set_reference((x_data*2)+(y_data*2));
     encL.update();
     motorL.go_to_ref();
 
-    motorR.set_reference((reference.x_data * 2) + (reference.y_data*2));
+    motorR.set_reference(-(x_data*2)+(y_data*2));
     encR.update();
     motorR.go_to_ref();
-*/
-    snprintf(msg, 50, "CH_1: %.2f, CH_2: %.2f \r\n", reference.x_data, reference.y_data);
+
+    snprintf(msg, 50, "CH_1: %.2f, CH_2: %.2f \r\n", x_data, y_data);
     HAL_UART_Transmit(&huart3,(uint8_t*) msg,sizeof(msg),10);
     osDelay(20U);
-
   }
   /* USER CODE END StartChassis */
 }

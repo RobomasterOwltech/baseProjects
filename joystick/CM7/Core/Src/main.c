@@ -185,13 +185,20 @@ Error_Handler();
 
     x_axis = x_adc / 1000;
     y_axis = y_adc / 1000;
-    in_min = 1;
+    in_min = 35;
     in_max = 65;
     out_min = -1;
     out_max = 1;
 
     x_map = (x_axis - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     y_map = (y_axis - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+
+    if(x_map < -1){
+    	x_map = -1;
+    }
+    if(y_map < -1){
+        y_map = -1;
+    }
 
     snprintf(msg, 100, "CH_1: %.2f, CH_2: %.2f \r\n", x_map, y_map);
     HAL_UART_Transmit(&huart3,msg,sizeof(msg),10);// Sending in normal mode
