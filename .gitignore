@@ -1,5 +1,6 @@
 # All metadata folders
 **/.metadata
 
-# All debug folders
-#**/Debug/*
+# All debug folders and files
+**/**/**/Debug/**/
+**/**/**/Debug/*
