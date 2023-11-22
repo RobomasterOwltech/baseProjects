@@ -1,5 +1,5 @@
 Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_exti.o: \
- C:/Users/tiano/STM32CubeIDE/workspace_1.10.1/Ultrasonico/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_exti.c \
+ C:/Users/sofia/STM32CubeIDE/workspace_1.13.1/Ultrasonico/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_exti.c \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
