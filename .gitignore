@@ -1,0 +1,9 @@
+# All metadata folders
+**/.metadata
+
+# All debug folders and files
+**/**/**/Debug/**/
+**/**/**/Debug/*
+
+# All settings from the Cube IDE
+**/.settings/*
